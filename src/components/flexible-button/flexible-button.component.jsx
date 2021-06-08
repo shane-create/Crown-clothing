@@ -1,9 +1,9 @@
 import React from "react";
 import "./flexible-button.styles.scss";
 
-function FlexibleButton({ children, isGoogleSignIn, ...otherButtonProps}){
+function FlexibleButton({ children, isGoogleSignIn, inverted, ...otherButtonProps}){
     return(
-        <button className= {`${isGoogleSignIn ? "google-sign-in" : ""} flexible-button`} {...otherButtonProps}>
+        <button className= {`${inverted ? "inverted" : ""} ${isGoogleSignIn ? "google-sign-in" : ""} flexible-button`} {...otherButtonProps}>
             {children}
         </button>
     )

@@ -20,7 +20,7 @@ function CollectionItem({item, addItem}) {
                 <span className="name">{name}</span>
                 <span className="price">{price}</span>
              </div>
-             <FlexibleButton onClick={() => addItem(item)} inverted>Add To Cart</FlexibleButton>
+             <FlexibleButton className="flexible-button" onClick={() => addItem(item)} inverted>Add To Cart</FlexibleButton>
     </div>
     )
 };

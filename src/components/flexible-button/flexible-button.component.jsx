@@ -1,11 +1,14 @@
 import React from "react";
+
+import { FlexibleButtonContainer } from "./flexible-button.styles";
+
 import "./flexible-button.styles.scss";
 
-function FlexibleButton({ children, isGoogleSignIn, inverted, ...otherButtonProps}){
+function FlexibleButton({ children, ...props}){
     return(
-        <button className= {`${inverted ? "inverted" : ""} ${isGoogleSignIn ? "google-sign-in" : ""} flexible-button`} {...otherButtonProps}>
+        <FlexibleButtonContainer {...props}>
             {children}
-        </button>
+        </FlexibleButtonContainer>
     )
 };
 

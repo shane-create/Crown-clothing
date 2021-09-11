@@ -11,6 +11,7 @@
                 <circle id="Oval" fill="#5E6363" cx="2" cy="9" r="2"></circle>
                 <circle id="Oval" fill="#5E6363" cx="25" cy="2" r="2"></circle>
                 <circle id="Oval" fill="#5E6363" cx="48" cy="9" r="2"></circle>
+                <!-- The svg form of the crwn logo -->
             </g>
         </g>
     </g>

@@ -1,5 +1,4 @@
-import React, {Component} from "react";
-import "./sign-in.styles.scss";
+import React, {useState} from "react";
 
 import FormInput from "../form-input/form-input.component";
 import FlexibleButton from "../flexible-button/flexible-button.component";
@@ -7,60 +6,44 @@ import FlexibleButton from "../flexible-button/flexible-button.component";
 import { connect } from "react-redux";
 import { emailSignInStart, googleSignInStart } from "../../redux/user/user.actions";
 
-class SignIn extends Component{
-    constructor(props){
-        super(props)
+import "./sign-in.styles.scss";
 
-        this.state = {
-            email: '',
-            password: ''
-        }
-    }
+function SignIn({ emailSignInStart, googleSignInStart }){
+    const [userCredentials, setUserCredentials] = useState({email:"", password:""});
+    const {email, password} = userCredentials;
 
-    handleSubmit = async event => {
+    const handleSubmit = async event => {
         event.preventDefault();
-        const { emailSignInStart } = this.props;
-        const {email, password} = this.state;
         emailSignInStart(email, password);
-
-        // try{
-        //     await auth.signInWithEmailAndPassword(email, password)
-        //     this.setState({email:'', password:''});
-        // } catch (error){
-        //     console.log("HAHA! Another error for you to fix! " + error);
-        // }
     }
 
-    handleChange = event => {
+    const handleChange = event => {
         const {value, name} = event.target;
 
-        this.setState({ [name]: value});
+        setUserCredentials({...userCredentials, [name]: value});
     }
-
-    render(){
-        const { googleSignInStart } = this.props;
         return(
             <div className="sign-in">
                 <h2 className="title">I already have an account</h2>
                 <span>Sign in using your email and password</span>
 
-                <form onSubmit={this.handleSubmit} >
+                <form onSubmit={handleSubmit} >
                     <FormInput 
                         name="email" 
                         type="email" 
                         label="Email" 
-                        value={this.state.email} 
+                        value={email} 
                         required="true" 
-                        handleChange={this.handleChange} 
+                        handleChange={handleChange} 
                     />
 
                     <FormInput 
                         name="password" 
                         type="password" 
                         label="Password" 
-                        value={this.state.password} 
+                        value={password} 
                         required="true" 
-                        handleChange={this.handleChange}
+                        handleChange={handleChange}
                     />
 
                     <div className="buttons">
@@ -71,7 +54,6 @@ class SignIn extends Component{
             </div>
         )
     } 
-} 
 
 const mapDispatchToProps = dispatch => ({
     googleSignInStart: () => dispatch(googleSignInStart()),

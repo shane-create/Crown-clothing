@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from "react-redux";
 
 import './App.css';
@@ -14,44 +14,12 @@ import CheckoutPage from "./pages/checkout/checkout.component";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { checkUserSession } from './redux/user/user.actions';
 
-//import { selectCollectionsForPreview } from "./redux/shop/shop.selectors";
+function App({ checkUserSession, currentUser } ){
 
-class App extends React.Component {
-  // constructor(props){
-  //   super(props);
-
-  //   this.state = {
-  //     currentUser: null
-  //   }
-  // }
-
-  unsubscirbeFromAuth = null;
-
-  componentDidMount(){
-    const { checkUserSession } = this.props;
+  useEffect(() => {
     checkUserSession();
-    //const {setCurrentUser, /*collectionsArray*/} = this.props;
-    // this.unsubscirbeFromAuth = auth.onAuthStateChanged(async userAuth => {
-    //   if (userAuth){
-    //     const userRef = await createUserProfileDocument(userAuth);
-
-    //     userRef.onSnapshot(snapShot => {
-    //       setCurrentUser({
-    //           id: snapShot.id,
-    //           ...snapShot.data()
-    //       });
-    //     });
-    //   }
-    //     setCurrentUser(userAuth);
-    //     //addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items}) ));
-    // }
-  }
-
-  componentWillUnmount(){
-    this.unsubscirbeFromAuth();
-  }
-
-  render() {
+  }, [checkUserSession]);
+  
     return (
       <div>
         <Header />
@@ -59,16 +27,14 @@ class App extends React.Component {
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
           <Route exact path="/checkout" component={CheckoutPage} />
-          <Route exact path="/signin" render={() => this.props.currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
+          <Route exact path="/signin" render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
         </Switch>
       </div>
     );
   }
-}
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
-  //collectionsArray: selectCollectionsForPreview
 })
 
 const mapDispatchToProps = dispatch => ({

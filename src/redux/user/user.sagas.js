@@ -2,12 +2,13 @@ import { all, call, put, takeLatest } from "redux-saga/effects";
 import { auth, createUserProfileDocument, getCurrentUser, googleProvider } from "../../firebase/firebase.utils";
 import { signInFailure, signInSucces, signOutFailure, signOutSucces, signUpFailure, signUpSuccess} from "./user.actions";
 import UserActionTypes  from "./user.types";
+import swal from 'sweetalert2';
 
 export function* getSnapshotFromUserAuth(userAuth, additionalData){
     try{
     const userRef = yield call(createUserProfileDocument, userAuth, additionalData);
         const userSnapshot = yield userRef.get();
-        yield put(signInSucces({id: userSnapshot.id, ...userSnapshot.data()}))
+        yield put(signInSucces({id: userSnapshot.id, ...userSnapshot.data()}));
     } catch(error){
         yield put(signInFailure(error));
     }
@@ -19,8 +20,13 @@ export function* signInWithGoogle(){
 }
 
 export function* signInWithEmail({payload: {email, password}}){
-        const {user} = yield auth.signInWithEmailAndPassword(email, password);
-        yield getSnapshotFromUserAuth(user);
+        try{
+            const {user} = yield auth.signInWithEmailAndPassword(email, password);
+            yield swal.fire("Success!", "You are now signed in", "success");
+            yield getSnapshotFromUserAuth(user);
+        } catch(error){
+            yield swal.fire("oops!", error.message, "error");
+        }
 }
 
 export function* isUserAuthenticated(){
@@ -47,6 +53,7 @@ export function* signUp({payload: {email, password, displayName}}){
         const {user} = yield auth.createUserWithEmailAndPassword(email, password);
         yield put(signUpSuccess({user, additionalData: { displayName }}))
     } catch(error){
+        yield swal.fire("Whoops!", error.message, "error");
         yield put(signUpFailure(error));
     }
 }
